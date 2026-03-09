@@ -1,0 +1,25 @@
+POST http://localhost:3000/api/personatges
+Content-Type: application/json
+
+
+{
+  "nom": "Swooper",
+  "tipus": "Pluma",
+  "velocitat": 0,
+  "acceleracio": 1.4,
+  "pes": 0,
+  "monedas": 1.8,
+  "minitubo": 0.8,
+  "maneig": 1.2
+},
+
+{
+  "nom": "Mario",
+  "tipus": "Medio",
+  "velocitat": 0.8,
+  "acceleracio": 0.6,
+  "pes": 0.8,
+  "monedas": 0.8,
+  "minitubo": 0.2,
+  "maneig": 0.6
+}

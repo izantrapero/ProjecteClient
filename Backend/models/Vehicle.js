@@ -8,7 +8,7 @@ const vehicleSchema = new mongoose.Schema({
     tipus: {
         type: String,
         enum: ["Moto", "Kart", "ATV"],
-        requiered: true
+        required: true
     },
     velocitat: {
         type: Number,

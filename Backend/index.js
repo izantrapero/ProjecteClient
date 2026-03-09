@@ -38,11 +38,14 @@ app.get("/api/combo/:personatgeId/:vehicleId", async (req, res) => {
             return res.status(404).json({ error: "No encontrado" });
         }
 
+        // Combinación de stats
         const stats = {
             velocitat: p.velocitat + v.velocitat + base,
             acceleracio: p.acceleracio + v.acceleracio + base,
             pes: p.pes + v.pes + base,
-            maneig: p.maneig + v.maneig + base
+            maneig: p.maneig + v.maneig + base,
+            monedas: p.monedas + v.monedas + base,
+            minitubo: p.minitubo + v.minitubo + base
         };
 
         res.json(stats);
