@@ -1,42 +1,60 @@
-const personatgesRouter = require("./controllers/personatges")
-const vehiclesRouter = require("./controllers/vehicles")
+// index.js
+const express = require("express");
+const connectDB = require("./mongo");
 
+// Routers
+const personatgesRouter = require("./controllers/personatges");
+const vehiclesRouter = require("./controllers/vehicles");
+
+// Middlewares
 const notFound = require('./middlewares/notFound');
 const handleErrors = require('./middlewares/handleErrors');
 
-const Personatge = require("./models/Personatge")
-const Vehicle = require("./models/Vehicle")
+// Models
+const Personatge = require("./models/Personatge");
+const Vehicle = require("./models/Vehicle");
 
-app.get("/api/personatges", personatgesRouter.getAll)
-app.post("/api/personatges", personatgesRouter.create)
+const app = express();
 
-app.get("/api/vehicles", vehiclesRouter.getAll)
-app.post("/api/vehicles", vehiclesRouter.create)
+// Middleware para leer JSON
+app.use(express.json());
 
-// rutas
-app.use('/personatges', personatgesRoutes);
-app.use('/vehicles', vehiclesRoutes);
+// Conectar a MongoDB
+connectDB();
 
-// middlewares finales
+// Rutas principales
+app.use("/api/personatges", personatgesRouter);
+app.use("/api/vehicles", vehiclesRouter);
+
+// Ruta especial de combo
+app.get("/api/combo/:personatgeId/:vehicleId", async (req, res) => {
+    const base = 0.6;
+
+    try {
+        const p = await Personatge.findById(req.params.personatgeId);
+        const v = await Vehicle.findById(req.params.vehicleId);
+
+        if (!p || !v) {
+            return res.status(404).json({ error: "No encontrado" });
+        }
+
+        const stats = {
+            velocitat: p.velocitat + v.velocitat + base,
+            acceleracio: p.acceleracio + v.acceleracio + base,
+            pes: p.pes + v.pes + base,
+            maneig: p.maneig + v.maneig + base
+        };
+
+        res.json(stats);
+    } catch (error) {
+        res.status(500).json({ error: "Error del servidor" });
+    }
+});
+
+// Middlewares finales
 app.use(notFound);
 app.use(handleErrors);
-app.get("/api/combo/:personatgeId/:vehicleId", async (req, res) => {
 
-    const base = 0.6
-
-    const p = await Personatge.findById(req.params.personatgeId)
-    const v = await Vehicle.findById(req.params.vehicleId)
-
-    if (!p || !v) {
-        return res.status(404).json({ error: "No encontrado" })
-    }
-
-    const stats = {
-        velocitat: p.velocitat + v.velocitat + base,
-        acceleracio: p.acceleracio + v.acceleracio + base,
-        pes: p.pes + v.pes + base,
-        maneig: p.maneig + v.maneig + base
-    }
-
-    res.json(stats)
-})
+// Arrancar servidor
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Servidor escuchando en puerto ${PORT}`));
