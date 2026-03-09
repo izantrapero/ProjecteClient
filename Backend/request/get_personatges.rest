@@ -1,0 +1,2 @@
+GET http://localhost:3000/personatges
+Accept: application/json

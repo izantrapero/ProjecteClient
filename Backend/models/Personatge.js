@@ -1,39 +1,39 @@
 const mongoose = require("mongoose")
 
 const personatgeSchema = new mongoose.Schema({
-  nom: {
-    type: String,
-    required: true
-  },
-  velocitat: {
-    type: Number,
-    required: true
-  },
-  acceleracio: {
-    type: Number,
-    required: true
-  },
-  pes: {
-    type: Number,
-    required: true
-  },
-  maneig: {
-    type: Number,
-    required: true
-  },
-  desbloquejable: {
-    type: Boolean,
-    default: false
-  },
-  habilitats: [
-    {
-      type: String
+    nom: {
+        type: String,
+        required: true
+    },
+    tipus: {
+        type: String,
+        enum: ["Pluma", "Ligero", "Semimedio", "Medio", "Pesado Medio", "Pesado", "Super Pesado"],
+        requiered: true
+    },
+    velocitat: {
+        type: Number,
+        required: true
+    },
+    acceleracio: {
+        type: Number,
+        required: true
+    },
+    pes: {
+        type: Number,
+        required: true
+    },
+    monedas: {
+        type: Number,
+        required: true
+    },
+    minitubo: {
+        type: Number,
+        required: true
+    },
+    maneig: {
+        type: Number,
+        required: true
     }
-  ],
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
 })
 
 module.exports = mongoose.model("Personatge", personatgeSchema)

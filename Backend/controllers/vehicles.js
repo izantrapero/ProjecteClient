@@ -14,9 +14,9 @@ const create = async (req, res) => {
     velocitat: body.velocitat,
     acceleracio: body.acceleracio,
     pes: body.pes,
-    maneig: body.maneig,
-    especial: body.especial,
-    tags: body.tags
+    monedas: body.monedas,
+    miniturbo: body.miniturbo,
+    maneig: body.maneig
   })
 
   const saved = await vehicle.save()

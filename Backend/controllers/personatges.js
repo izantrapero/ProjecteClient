@@ -10,12 +10,13 @@ const create = async (req, res) => {
 
   const personatge = new Personatge({
     nom: body.nom,
+    tipus: body.tipus,
     velocitat: body.velocitat,
     acceleracio: body.acceleracio,
     pes: body.pes,
-    maneig: body.maneig,
-    desbloquejable: body.desbloquejable,
-    habilitats: body.habilitats
+    monedas: body.monedas,
+    miniturbo: body.miniturbo,
+    maneig: body.maneig
   })
 
   const saved = await personatge.save()
