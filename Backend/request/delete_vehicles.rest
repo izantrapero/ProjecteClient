@@ -1,0 +1,2 @@
+DELETE  http://localhost:3000/vehicles/69961ea7f15b737c27dcb2a7
+Accept: application/json
