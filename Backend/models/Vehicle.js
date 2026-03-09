@@ -26,7 +26,7 @@ const vehicleSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    minitubo: {
+    miniturbo: {
         type: Number,
         required: true
     },

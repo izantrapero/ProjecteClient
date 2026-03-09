@@ -1,29 +1,80 @@
-const Vehicle = require("../models/Vehicle")
+// controllers/vehicles.js
+const Vehicle = require("../models/Vehicle");
 
-const getAll = async (req, res) => {
-  const vehicles = await Vehicle.find({})
-  res.json(vehicles)
-}
+// Obtener todos los vehículos
+const getAll = async (req, res, next) => {
+  try {
+    const vehicles = await Vehicle.find({});
+    res.json(vehicles);
+  } catch (error) {
+    next(error);
+  }
+};
 
-const create = async (req, res) => {
-  const body = req.body
+// Obtener un vehículo por id
+const getOne = async (req, res, next) => {
+  try {
+    const vehicle = await Vehicle.findById(req.params.id);
+    if (!vehicle) return res.status(404).json({ error: "Vehículo no encontrado" });
+    res.json(vehicle);
+  } catch (error) {
+    next(error);
+  }
+};
 
-  const vehicle = new Vehicle({
-    nom: body.nom,
-    tipus: body.tipus,
-    velocitat: body.velocitat,
-    acceleracio: body.acceleracio,
-    pes: body.pes,
-    monedas: body.monedas,
-    miniturbo: body.miniturbo,
-    maneig: body.maneig
-  })
+// Crear un vehículo
+const create = async (req, res, next) => {
+  try {
+    const body = req.body;
 
-  const saved = await vehicle.save()
-  res.status(201).json(saved)
-}
+    const vehicle = new Vehicle({
+      nom: body.nom,
+      tipus: body.tipus,
+      velocitat: body.velocitat,
+      acceleracio: body.acceleracio,
+      pes: body.pes,
+      monedas: body.monedas,
+      miniturbo: body.miniturbo,
+      maneig: body.maneig
+    });
+
+    const saved = await vehicle.save();
+    res.status(201).json(saved);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Editar un vehículo
+const edit = async (req, res, next) => {
+  try {
+    const updated = await Vehicle.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!updated) return res.status(404).json({ error: "Vehículo no encontrado" });
+    res.json(updated);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Borrar un vehículo
+const remove = async (req, res, next) => {
+  try {
+    const deleted = await Vehicle.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: "Vehículo no encontrado" });
+    res.json({ message: "Vehículo eliminado" });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   getAll,
-  create
-}
+  getOne,
+  create,
+  edit,
+  remove
+};

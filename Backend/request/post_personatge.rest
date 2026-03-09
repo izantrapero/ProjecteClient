@@ -9,7 +9,7 @@ Content-Type: application/json
   "acceleracio": 1.4,
   "pes": 0,
   "monedas": 1.8,
-  "minitubo": 0.8,
+  "miniturbo": 0.8,
   "maneig": 1.2
 },
 
@@ -20,6 +20,6 @@ Content-Type: application/json
   "acceleracio": 0.6,
   "pes": 0.8,
   "monedas": 0.8,
-  "minitubo": 0.2,
+  "miniturbo": 0.2,
   "maneig": 0.6
 }
