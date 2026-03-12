@@ -11,15 +11,4 @@ Content-Type: application/json
   "monedas": 1.8,
   "miniturbo": 0.8,
   "maneig": 1.2
-},
-
-{
-  "nom": "Mario",
-  "tipus": "Medio",
-  "velocitat": 0.8,
-  "acceleracio": 0.6,
-  "pes": 0.8,
-  "monedas": 0.8,
-  "miniturbo": 0.2,
-  "maneig": 0.6
 }
