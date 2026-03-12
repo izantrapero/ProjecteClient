@@ -1,2 +1,2 @@
-DELETE  http://localhost:3000/personatges/69961ea7f15b737c27dcb2a7
+DELETE  http://localhost:3000/api/personatges/69961ea7f15b737c27dcb2a7
 Accept: application/json

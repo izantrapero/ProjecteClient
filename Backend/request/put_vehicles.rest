@@ -1,4 +1,4 @@
-PUT http://localhost:3000/vehicles/69961ea7f15b737c27dcb2a8
+PUT http://localhost:3000/api/vehicles/69961ea7f15b737c27dcb2a8
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 
 
 ### Malformed id
-PUT http://localhost:3000/vehicles/6984857d2c724bf453dc335 
+PUT http://localhost:3000/api/vehicles/6984857d2c724bf453dc335 
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 ### Id not found
 
-PUT http://localhost:3001/vehicles/6984857d2c724bf453dc3357 
+PUT http://localhost:3001/api/vehicles/6984857d2c724bf453dc3357 
 Content-Type: application/json
 
 {
