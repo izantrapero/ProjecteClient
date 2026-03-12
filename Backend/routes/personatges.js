@@ -1,13 +1,10 @@
-// routes/personatges.js
-const express = require("express");
-const router = express.Router();
-const { getAll, getOne, create, edit, remove } = require("../controllers/personatges");
+const router = require("express").Router();
+const personatges = require("../controllers/personatges");
 
-// Endpoints CRUD
-router.get("/", getAll);
-router.get("/:id", getOne);
-router.post("/", create);
-router.put("/:id", edit);
-router.delete("/:id", remove);
+router.get("/", personatges.getAll);
+router.get("/:id", personatges.getOne);
+router.post("/", personatges.create);
+router.put("/:id", personatges.edit);
+router.delete("/:id", personatges.remove);
 
 module.exports = router;

@@ -3,8 +3,8 @@ const express = require("express");
 const connectDB = require("./mongo");
 
 // Routers
-const personatgesRouter = require("./controllers/personatges");
-const vehiclesRouter = require("./controllers/vehicles");
+const personatgesRouter = require("./routes/personatges");
+const vehiclesRouter = require("./routes/vehicles");
 
 // Middlewares
 const notFound = require('./middlewares/notFound');

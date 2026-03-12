@@ -1,12 +1,10 @@
-const express = require("express");
-const router = express.Router();
-const { getAll, getOne, create, edit, remove } = require("./vehicles");
+const router = require("express").Router();
+const vehicles = require("../controllers/vehicles");
 
-// Endpoints CRUD
-router.get("/", getAll);
-router.get("/:id", getOne);
-router.post("/", create);
-router.put("/:id", edit);
-router.delete("/:id", remove);
+router.get("/", vehicles.getAll);
+router.get("/:id", vehicles.getOne);
+router.post("/", vehicles.create);
+router.put("/:id", vehicles.edit);
+router.delete("/:id", vehicles.remove);
 
 module.exports = router;
