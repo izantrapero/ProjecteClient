@@ -1,0 +1,145 @@
+:root {
+  font-family: "Trebuchet MS", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  --mk-red: #e63946;
+  --mk-blue: #457b9d;
+  --mk-yellow: #ffcc00;
+  --mk-dark: #1d3557;
+  --mk-light: #f1faee;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #e63946, #457b9d);
+  min-height: 100vh;
+  color: var(--mk-dark);
+}
+
+/* TITULO*/
+
+h1 {
+  text-align: center;
+  font-size: 3rem;
+  color: white;
+  text-shadow: 3px 3px 0px black;
+  margin-top: 20px;
+}
+
+/*SECCIONES*/
+
+section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 80%;
+  max-width: 900px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+h2 {
+  color: var(--mk-red);
+  border-bottom: 3px solid var(--mk-yellow);
+  padding-bottom: 5px;
+}
+
+/*LISTAS*/
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: var(--mk-light);
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 6px solid var(--mk-blue);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/*BOTONES*/
+
+button {
+  background: var(--mk-yellow);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin-right: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/*FORMULARIOS*/
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+input, select {
+  padding: 6px;
+  border-radius: 6px;
+  border: 2px solid var(--mk-blue);
+  font-size: 0.9rem;
+}
+
+/*MODAL*/
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.6);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  min-width: 550px;
+  width: auto;
+  
+
+  border: 6px solid var(--mk-yellow);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/*DETALLES*/
+
+li div {
+  background: #fff;
+  border-radius: 6px;
+  padding: 10px;
+  border: 2px dashed var(--mk-red);
+}

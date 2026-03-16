@@ -1,4 +1,3 @@
-// src/App.jsx
 import { useEffect, useState } from "react";
 import {
   getAllPersonatges,
@@ -13,14 +12,28 @@ import {
 import { PersonatgeForm } from "./components/PersonatgeForm";
 import { VehicleForm } from "./components/VehiclesForm";
 
-function App() {
-  const [personatges, setPersonatges] = useState([]);
-  const [vehicles, setVehicles] = useState([]);
-  const [selectedPersonatge, setSelectedPersonatge] = useState(null);
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
 
-  const [newPersonatge, setNewPersonatge] = useState({
-    _id: "",
+
+import type { Personatge, Vehicle } from "./types/types";
+import React from "react";
+import Button from "./components/Button";
+
+function App() {
+  const [personatges, setPersonatges] = useState<Personatge[]>([]);
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+
+  const [selectedPersonatge, setSelectedPersonatge] = useState<Personatge | null>(null);
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
+
+  const [showPersonatgeModal, setShowPersonatgeModal] = useState(false);
+  const [showVehicleModal, setShowVehicleModal] = useState(false);
+
+  const [confirmPersonatgeId, setConfirmPersonatgeId] = useState<string | null>(null);
+  const [confirmVehicleId, setConfirmVehicleId] = useState<string | null>(null);
+
+
+
+  const [newPersonatge, setNewPersonatge] = useState<Omit<Personatge, "_id">>({
     nom: "",
     tipus: "Pluma",
     velocitat: 0,
@@ -31,8 +44,7 @@ function App() {
     maneig: 0,
   });
 
-  const [newVehicle, setNewVehicle] = useState({
-    _id: "",
+  const [newVehicle, setNewVehicle] = useState<Omit<Vehicle, "_id">>({
     nom: "",
     tipus: "Kart",
     velocitat: 0,
@@ -66,20 +78,25 @@ function App() {
     }
   };
 
-  const handlePersonatgeChange = (field, value) => {
+  const handlePersonatgeChange = (
+    field: keyof Omit<Personatge, "_id">,
+    value: string | number
+  ) => {
     setNewPersonatge((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleVehicleChange = (field, value) => {
+  const handleVehicleChange = (
+    field: keyof Omit<Vehicle, "_id">,
+    value: string | number
+  ) => {
     setNewVehicle((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handlePersonatgeSubmit = async (e) => {
+  const handlePersonatgeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const created = await createPersonatge(newPersonatge);
     setPersonatges([...personatges, created]);
     setNewPersonatge({
-      _id: "",
       nom: "",
       tipus: "Pluma",
       velocitat: 0,
@@ -91,12 +108,11 @@ function App() {
     });
   };
 
-  const handleVehicleSubmit = async (e) => {
+  const handleVehicleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const created = await createVehicle(newVehicle);
     setVehicles([...vehicles, created]);
     setNewVehicle({
-      _id: "",
       nom: "",
       tipus: "Kart",
       velocitat: 0,
@@ -108,15 +124,17 @@ function App() {
     });
   };
 
-  const handleDeletePersonatge = async (id) => {
+  const handleDeletePersonatge = async (id: string) => {
     await deletePersonatge(id);
     fetchPersonatges();
   };
 
-  const handleDeleteVehicle = async (id) => {
+  const handleDeleteVehicle = async (id: string) => {
     await deleteVehicle(id);
     fetchVehicles();
   };
+
+
 
   return (
     <div>
@@ -128,18 +146,18 @@ function App() {
           {personatges.map((p) => (
             <li key={p._id}>
               {p.nom} - {p.tipus} - Velocidad: {p.velocitat}
-              <button
+              <Button
+                text="Detalles"
                 onClick={() =>
                   setSelectedPersonatge(
                     selectedPersonatge?._id === p._id ? null : p,
                   )
                 }
-              >
-                Detalles
-              </button>
-              <button onClick={() => handleDeletePersonatge(p._id)}>
-                Eliminar
-              </button>
+              />
+              <Button
+                text="Eliminar"
+                onClick={() => setConfirmPersonatgeId(p._id)}
+              />
               {selectedPersonatge?._id === p._id && (
                 <div
                   style={{
@@ -162,12 +180,30 @@ function App() {
           ))}
         </ul>
 
-        <h3>Crear Personaje</h3>
-        <PersonatgeForm
-          personatge={newPersonatge}
-          onChange={handlePersonatgeChange}
-          onSubmit={handlePersonatgeSubmit}
+        <Button
+          text="Crear Personaje"
+          onClick={() => setShowPersonatgeModal(true)}
         />
+        {showPersonatgeModal && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h3>Crear Personaje</h3>
+
+              <PersonatgeForm
+                personatge={newPersonatge}
+                onChange={handlePersonatgeChange}
+                onSubmit={(e) => {
+                  handlePersonatgeSubmit(e);
+                  setShowPersonatgeModal(false);
+                }}
+              />
+
+              <button onClick={() => setShowPersonatgeModal(false)}>
+                Cerrar
+              </button>
+            </div>
+          </div>
+        )}
       </section>
 
       <section>
@@ -183,7 +219,7 @@ function App() {
               >
                 Detalles
               </button>
-              <button onClick={() => handleDeleteVehicle(v._id)}>
+              <button onClick={() => setConfirmVehicleId(v._id)}>
                 Eliminar
               </button>
               {selectedVehicle?._id === v._id && (
@@ -208,13 +244,80 @@ function App() {
           ))}
         </ul>
 
-        <h3>Crear Vehículo</h3>
-        <VehicleForm
-          vehicle={newVehicle}
-          onChange={handleVehicleChange}
-          onSubmit={handleVehicleSubmit}
+        <Button
+          text="Crear vehiculo"
+          onClick={() => setShowVehicleModal(true)}
         />
+        {showVehicleModal && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h3>Crear Vehículo</h3>
+
+              <VehicleForm
+                vehicle={newVehicle}
+                onChange={handleVehicleChange}
+                onSubmit={(e) => {
+                  handleVehicleSubmit(e);
+                  setShowVehicleModal(false);
+                }}
+              />
+
+              <button onClick={() => setShowVehicleModal(false)}>
+                Cerrar
+              </button>
+            </div>
+          </div>
+        )}
       </section>
+
+      {confirmPersonatgeId && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>⚠️ Confirmar eliminación</h3>
+            <p>¿Seguro que quieres eliminar este personaje?</p>
+
+            <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
+              <button
+                onClick={() => {
+                  handleDeletePersonatge(confirmPersonatgeId);
+                  setConfirmPersonatgeId(null);
+                }}
+              >
+                Sí, eliminar
+              </button>
+
+              <button onClick={() => setConfirmPersonatgeId(null)}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {confirmVehicleId && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>⚠️ Confirmar eliminación</h3>
+            <p>¿Seguro que quieres eliminar este vehículo?</p>
+
+            <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
+              <button
+                onClick={() => {
+                  handleDeleteVehicle(confirmVehicleId);
+                  setConfirmVehicleId(null);
+                }}
+              >
+                Sí, eliminar
+              </button>
+
+              <Button
+                text="Cerrar"
+                onClick={() => setShowPersonatgeModal(false)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

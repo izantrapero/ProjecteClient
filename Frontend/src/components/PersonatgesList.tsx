@@ -1,37 +1,53 @@
-// src/components/PersonatgesList.tsx
-import React, { useEffect, useState } from "react";
-import { Personatge } from "../types/types";
-import { getAllPersonatges, deletePersonatge } from "../services/personatgesService";
+import type { Personatge } from "../types/types";
 
-const PersonatgesList: React.FC = () => {
-  const [personatges, setPersonatges] = useState<Personatge[]>([]);
+interface Props {
+  personatges: Personatge[];
+  selectedPersonatge: Personatge | null;
+  setSelectedPersonatge: (p: Personatge | null) => void;
+  handleDeletePersonatge: (id: string) => void;
+}
 
-  const fetchPersonatges = async () => {
-    const data = await getAllPersonatges();
-    setPersonatges(data);
-  };
-
-  const handleDelete = async (id: string) => {
-    await deletePersonatge(id);
-    fetchPersonatges(); // refrescar la lista
-  };
-
-  useEffect(() => {
-    fetchPersonatges();
-  }, []);
-
+const PersonatgesList = ({
+  personatges,
+  selectedPersonatge,
+  setSelectedPersonatge,
+  handleDeletePersonatge,
+}: Props) => {
   return (
-    <div>
-      <h2>Personajes</h2>
-      <ul>
-        {personatges.map((p) => (
-          <li key={p._id}>
-            {p.nom} - {p.tipus} - Velocidad: {p.velocitat}
-            <button onClick={() => handleDelete(p._id)}>Eliminar</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul>
+      {personatges.map((p) => (
+        <li key={p._id}>
+          {p.nom} - {p.tipus} - Velocidad: {p.velocitat}
+
+          <button
+            onClick={() =>
+              setSelectedPersonatge(
+                selectedPersonatge?._id === p._id ? null : p
+              )
+            }
+          >
+            {selectedPersonatge?._id === p._id ? "Ocultar" : "Detalles"}
+          </button>
+
+          <button onClick={() => handleDeletePersonatge(p._id)}>
+            Eliminar
+          </button>
+
+          {selectedPersonatge?._id === p._id && (
+            <div style={{ marginTop: "5px", border: "1px solid #ccc", padding: "5px" }}>
+              <p>Nombre: {p.nom}</p>
+              <p>Tipo: {p.tipus}</p>
+              <p>Velocidad: {p.velocitat}</p>
+              <p>Aceleración: {p.acceleracio}</p>
+              <p>Peso: {p.pes}</p>
+              <p>Manejo: {p.maneig}</p>
+              <p>Monedas: {p.monedas}</p>
+              <p>Miniturbo: {p.miniturbo}</p>
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
   );
 };
 
