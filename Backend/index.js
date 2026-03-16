@@ -1,6 +1,7 @@
 // index.js
 const express = require("express");
 const connectDB = require("./mongo");
+const cors = require("cors");// para pruebas rápidas
 
 // Routers
 const personatgesRouter = require("./routes/personatges");
@@ -18,6 +19,8 @@ const app = express();
 
 // Middleware para leer JSON
 app.use(express.json());
+
+app.use(cors()); 
 
 // Conectar a MongoDB
 connectDB();

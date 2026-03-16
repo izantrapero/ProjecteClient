@@ -8,17 +8,6 @@ Content-Type: application/json
   "acceleracio": 1.4,
   "pes": 0,
   "monedas": 1.2,
-  "minitubo": 1.4,
+  "miniturbo": 1.4,
   "maneig": 2.2
-},
-
-{
-  "nom": "Blooper BB",
-  "tipus": "Kart",
-  "velocitat": 1.4,
-  "acceleracio": 1.2,
-  "pes": 0.2,
-  "monedas": 1,
-  "minitubo": 1.2,
-  "maneig": 2
-},
+}
