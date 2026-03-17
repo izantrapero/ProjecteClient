@@ -120,6 +120,17 @@ export const PersonatgeForm: React.FC<Props> = ({ personatge, onChange, onSubmit
 
       {errors.pes && <p className="error">{errors.peso}</p>}
 
+      Manejo:
+      <input
+        type="number"
+        step="0.1"
+        placeholder="Manejo"
+        value={personatge.maneig ?? ""}
+        onChange={(e) => onChange("maneig", Number(e.target.value))}
+      /> <br />
+
+      {errors.maneig && <p className="error">{errors.maneig}</p>}
+
       Monedas:
       <input
         type="number"
@@ -141,17 +152,6 @@ export const PersonatgeForm: React.FC<Props> = ({ personatge, onChange, onSubmit
       /> <br />
 
       {errors.miniturbo && <p className="error">{errors.miniturbo}</p>}
-
-      Manejo:
-      <input
-        type="number"
-        step="0.1"
-        placeholder="Manejo"
-        value={personatge.maneig ?? ""}
-        onChange={(e) => onChange("maneig", Number(e.target.value))}
-      /> <br />
-
-      {errors.maneig && <p className="error">{errors.maneig}</p>}
 
       <Button text="Crear Personaje" type="submit" />
     </form>

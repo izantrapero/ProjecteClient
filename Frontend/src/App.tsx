@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
+import React from "react";
+import Button from "./components/Button";
+import PersonatgesList from "./components/PersonatgesList";
+import VehiclesList from "./components/VehiclesList";
+
 import {
   getAllPersonatges,
   createPersonatge,
   deletePersonatge,
 } from "./services/personatgesService";
+
 import {
   getAllVehicles,
   createVehicle,
   deleteVehicle,
 } from "./services/vehiclesService";
+
 import { PersonatgeForm } from "./components/PersonatgeForm";
 import { VehicleForm } from "./components/VehiclesForm";
 
-
-
 import type { Personatge, Vehicle } from "./types/types";
-import React from "react";
-import Button from "./components/Button";
 
 function App() {
   const [personatges, setPersonatges] = useState<Personatge[]>([]);
@@ -30,8 +33,6 @@ function App() {
 
   const [confirmPersonatgeId, setConfirmPersonatgeId] = useState<string | null>(null);
   const [confirmVehicleId, setConfirmVehicleId] = useState<string | null>(null);
-
-
 
   const [newPersonatge, setNewPersonatge] = useState<Omit<Personatge, "_id">>({
     nom: "",
@@ -134,56 +135,27 @@ function App() {
     fetchVehicles();
   };
 
-
-
   return (
     <div>
       <h1>Mario Kart Builder</h1>
 
+      {/* ================= PERSONAJES ================= */}
       <section>
         <h2>Personajes</h2>
-        <ul>
-          {personatges.map((p) => (
-            <li key={p._id}>
-              {p.nom} - {p.tipus} - Velocidad: {p.velocitat}
-              <Button
-                text="Detalles"
-                onClick={() =>
-                  setSelectedPersonatge(
-                    selectedPersonatge?._id === p._id ? null : p,
-                  )
-                }
-              />
-              <Button
-                text="Eliminar"
-                onClick={() => setConfirmPersonatgeId(p._id)}
-              />
-              {selectedPersonatge?._id === p._id && (
-                <div
-                  style={{
-                    marginTop: "5px",
-                    border: "1px solid #ccc",
-                    padding: "5px",
-                  }}
-                >
-                  <p>Nombre: {selectedPersonatge.nom}</p>
-                  <p>Tipo: {selectedPersonatge.tipus}</p>
-                  <p>Velocidad: {selectedPersonatge.velocitat}</p>
-                  <p>Aceleración: {selectedPersonatge.acceleracio}</p>
-                  <p>Peso: {selectedPersonatge.pes}</p>
-                  <p>Manejo: {selectedPersonatge.maneig}</p>
-                  <p>Monedas: {selectedPersonatge.monedas}</p>
-                  <p>Miniturbo: {selectedPersonatge.miniturbo}</p>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
+
+        <PersonatgesList
+          personatges={personatges}
+          selectedPersonatge={selectedPersonatge}
+          setSelectedPersonatge={setSelectedPersonatge}
+          handleDeletePersonatge={(id) => setConfirmPersonatgeId(id)}
+          setPersonatges={setPersonatges}
+        />
 
         <Button
           text="Crear Personaje"
           onClick={() => setShowPersonatgeModal(true)}
         />
+
         {showPersonatgeModal && (
           <div className="modal-overlay">
             <div className="modal-content">
@@ -198,56 +170,32 @@ function App() {
                 }}
               />
 
-              <button onClick={() => setShowPersonatgeModal(false)}>
-                Cerrar
-              </button>
+              <Button
+                text="Cerrar"
+                onClick={() => setShowPersonatgeModal(false)}
+              />
             </div>
           </div>
         )}
       </section>
 
+      {/* ================= VEHÍCULOS ================= */}
       <section>
         <h2>Vehículos</h2>
-        <ul>
-          {vehicles.map((v) => (
-            <li key={v._id}>
-              {v.nom} - {v.tipus} - Velocidad: {v.velocitat}
-              <button
-                onClick={() =>
-                  setSelectedVehicle(selectedVehicle?._id === v._id ? null : v)
-                }
-              >
-                Detalles
-              </button>
-              <button onClick={() => setConfirmVehicleId(v._id)}>
-                Eliminar
-              </button>
-              {selectedVehicle?._id === v._id && (
-                <div
-                  style={{
-                    marginTop: "5px",
-                    border: "1px solid #ccc",
-                    padding: "5px",
-                  }}
-                >
-                  <p>Nombre: {selectedVehicle.nom}</p>
-                  <p>Tipo: {selectedVehicle.tipus}</p>
-                  <p>Velocidad: {selectedVehicle.velocitat}</p>
-                  <p>Aceleración: {selectedVehicle.acceleracio}</p>
-                  <p>Peso: {selectedVehicle.pes}</p>
-                  <p>Manejo: {selectedVehicle.maneig}</p>
-                  <p>Monedas: {selectedVehicle.monedas}</p>
-                  <p>Miniturbo: {selectedVehicle.miniturbo}</p>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
+
+        <VehiclesList
+          vehicles={vehicles}
+          selectedVehicle={selectedVehicle}
+          setSelectedVehicle={setSelectedVehicle}
+          handleDeleteVehicle={(id) => setConfirmVehicleId(id)}
+          setVehicles={setVehicles}
+        />
 
         <Button
           text="Crear vehiculo"
           onClick={() => setShowVehicleModal(true)}
         />
+
         {showVehicleModal && (
           <div className="modal-overlay">
             <div className="modal-content">
@@ -262,14 +210,16 @@ function App() {
                 }}
               />
 
-              <button onClick={() => setShowVehicleModal(false)}>
-                Cerrar
-              </button>
+              <Button
+                text="Cerrar"
+                onClick={() => setShowVehicleModal(false)}
+              />
             </div>
           </div>
         )}
       </section>
 
+      {/* ================= CONFIRM DELETE PERSONAJE ================= */}
       {confirmPersonatgeId && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -277,23 +227,24 @@ function App() {
             <p>¿Seguro que quieres eliminar este personaje?</p>
 
             <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
-              <button
+              <Button
+                text="Sí, eliminar"
                 onClick={() => {
                   handleDeletePersonatge(confirmPersonatgeId);
                   setConfirmPersonatgeId(null);
                 }}
-              >
-                Sí, eliminar
-              </button>
+              />
 
-              <button onClick={() => setConfirmPersonatgeId(null)}>
-                Cancelar
-              </button>
+              <Button
+                text="Cancelar"
+                onClick={() => setConfirmPersonatgeId(null)}
+              />
             </div>
           </div>
         </div>
       )}
 
+      {/* ================= CONFIRM DELETE VEHICLE ================= */}
       {confirmVehicleId && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -301,18 +252,17 @@ function App() {
             <p>¿Seguro que quieres eliminar este vehículo?</p>
 
             <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
-              <button
+              <Button
+                text="Sí, eliminar"
                 onClick={() => {
                   handleDeleteVehicle(confirmVehicleId);
                   setConfirmVehicleId(null);
                 }}
-              >
-                Sí, eliminar
-              </button>
+              />
 
               <Button
-                text="Cerrar"
-                onClick={() => setShowPersonatgeModal(false)}
+                text="Cancelar"
+                onClick={() => setConfirmVehicleId(null)}
               />
             </div>
           </div>

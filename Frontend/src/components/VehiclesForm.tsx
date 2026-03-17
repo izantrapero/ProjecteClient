@@ -116,6 +116,18 @@ export const VehicleForm: React.FC<Props> = ({ vehicle, onChange, onSubmit }) =>
 
       {errors.pes && <p className="error">{errors.pes}</p>}
 
+      Manejo:
+      <input
+        type="number"
+        step="0.1"
+        placeholder="Manejo"
+        value={vehicle.maneig ??  ""}
+        onChange={(e) => onChange("maneig", Number(e.target.value))}
+      />
+      <br />
+
+      {errors.maneig && <p className="error">{errors.maneig}</p>}
+
       Monedas:
       <input
         type="number"
@@ -140,17 +152,7 @@ export const VehicleForm: React.FC<Props> = ({ vehicle, onChange, onSubmit }) =>
 
       {errors.miniturbo && <p className="error">{errors.miniturbo}</p>}
 
-      Manejo:
-      <input
-        type="number"
-        step="0.1"
-        placeholder="Manejo"
-        value={vehicle.maneig ??  ""}
-        onChange={(e) => onChange("maneig", Number(e.target.value))}
-      />
-      <br />
-
-      {errors.maneig && <p className="error">{errors.maneig}</p>}
+      
 
       <Button text="Crear vehiculo" type="submit" />
 
